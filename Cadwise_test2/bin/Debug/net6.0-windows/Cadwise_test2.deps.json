@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Cadwise_test2/1.0.0": {
+        "runtime": {
+          "Cadwise_test2.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Cadwise_test2/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

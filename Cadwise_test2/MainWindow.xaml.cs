@@ -34,5 +34,10 @@ namespace Cadwise_test2
         {
             InitializeComponent();
         }
+
+        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
     }
 }

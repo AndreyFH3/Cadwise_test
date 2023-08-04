@@ -37,10 +37,33 @@ namespace Cadwise_test2
             }
         }
 
-        public List<Bill> GiveBills(int money)
+        public List<Bill> GiveBills(int money, bool bigValue)
         {
+            List<Bill> bills = new List<Bill>();
+            int value = 0;
+            while (value != money)
+                {
+                    if (bigValue)
+                    {
+                        foreach (Bill b in _bills)
+                        {
+                            if(b.Value == BillValue.OneThousand || b.Value == BillValue.TwoThousand || b.Value == BillValue.FiveThousand)
+                            {
+                                
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (Bill bill in _bills)
+                        {
 
+                        }
+                    }
+                }
+            return bills;
         }
         
+
     }
 }
