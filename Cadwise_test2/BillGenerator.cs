@@ -48,7 +48,30 @@ namespace Cadwise_test2
 
                 }
             }
-            return bills;
+            return BubbleSort(bills);
+        }
+
+        public static List<Bill> BubbleSort(List<Bill> anArray)
+        {
+          
+             for (int i = 0; i < anArray.Count; i++)
+             {
+                 for (int j = 0; j < anArray.Count - 1 - i; j++)
+                 {
+                     if ((int)anArray[j].Value > (int)anArray[j + 1].Value)
+                     {
+                        Swap(anArray, j, j + 1);
+                     }
+                 }
+             }
+            return anArray;
+        }
+ 
+        public static void Swap(List<Bill> bill, int first, int second)
+        {
+            Bill tmpParam = bill[first];
+            bill[first] = bill[second];
+            bill[second] = tmpParam;
         }
     }
 }

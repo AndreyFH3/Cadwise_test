@@ -8,7 +8,7 @@ namespace Cadwise_test2
 {
     internal class ATM
     {
-        private int MoneyAmount
+        public int AmountCash
         {
             get
             {
@@ -21,7 +21,7 @@ namespace Cadwise_test2
             }
         }
 
-        List<Bill> _bills;
+        public List<Bill> _bills;
 
         public ATM(int startCapacity, int maxCapacity = 512)
         {
@@ -37,30 +37,31 @@ namespace Cadwise_test2
             }
         }
 
-        public List<Bill> GiveBills(int money, bool bigValue)
+        public List<Bill> CashOut(int money, bool? bigValue)
         {
             List<Bill> bills = new List<Bill>();
             int value = 0;
-            while (value != money)
+            int tens = money % 100;
+            int hundreed = money % 1_000 - tens;
+            int thousand = money % 1_000_000 - hundreed - tens;
+            if(bigValue == true)
+            {
+                for (int i = 0; i <= _bills.Count; i++)
                 {
-                    if (bigValue)
-                    {
-                        foreach (Bill b in _bills)
-                        {
-                            if(b.Value == BillValue.OneThousand || b.Value == BillValue.TwoThousand || b.Value == BillValue.FiveThousand)
-                            {
-                                
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foreach (Bill bill in _bills)
-                        {
-
-                        }
-                    }
+                    value += 1;
+                    //need take bills which can give amount = money;
+                    //calculate how can it be take;
+                    //from maxToLow if bigValue = true;
+                    //from LowToMax if bigValue = false;
                 }
+            }
+            else
+            {
+                for(int i =_bills.Count - 1; i>=0; i--)
+                {
+
+                }
+            }
             return bills;
         }
         
