@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -17,6 +18,7 @@ namespace Cadwise_test2
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
+    public delegate void AddMoney(List<Bill> bills);
     /// </summary>
     public enum BillValue { 
         Ten = 10, 
@@ -28,43 +30,51 @@ namespace Cadwise_test2
         TwoThousand  = 2000, 
         FiveThousand  = 5000
     }
+
     public partial class MainWindow : Window
     {
-        private ATM _atm = new ATM(320); //необходимо указать, колличество купюр в началеработы (максимум - 512)
-        private Wallet _wallet = new Wallet(40); //необходимо указать, колличество купюр в началеработы (максимум - 64)
+        private ATM _atm = new ATM(640); //необходимо указать, колличество купюр в началеработы (максимум - 1024)
+        private int multiplayer = 10;
         public MainWindow()
         {
             InitializeComponent();
+            SetBalances();
+            multiplayer = _atm.GetMultiplayer();
+
         }
 
 
-        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void SetBalances()
         {
-
+            ATMBalanceText.Text = $"баланс банкомата: {_atm.BalanceCash}";
         }
 
         private void CashOutButton_Click(object sender, RoutedEventArgs e)
         {
             if(int.TryParse(GetMoenyText.Text, out int amount))
             {
-                if(amount % 100 == 0)
+                if(amount % multiplayer == 0)
                 {
-
-                    MessageBox.Show("КРАСАВЧИК");
-                    //_wallet.AddMoney(_atm.CashOut(amount, amount >= 5000 ? BigMoneyCheckBox.IsChecked : false));
+                    LB.Items.Clear();
+                    List<Bill> b = _atm.CashOut(amount, BigMoneyCheckBox.IsChecked);
+                    foreach(Bill bill in b)
+                    {
+                        LB.Items.Add($"Купюра номиналом: {(int)bill.Value}");
+                    }
+                    multiplayer = _atm.GetMultiplayer();
+                    SetBalances();
                 }
                 else
                 {
                     MessageBox.Show("Введите число кратное 100!");
                 }
             }
-            //ATM w = new ATM(320);
-            //StringBuilder sb = new StringBuilder();
-            //foreach (Bill b in w._bills)
-            //{
-            //    sb.Append($"Купюра номинолом: {(int)b.Value}, ");
-            //}
-            //RES.Text = sb.ToString();
+        }
+
+        private void AddToATM_Click(object sender, RoutedEventArgs e)
+        {
+            Window1 win = new Window1(delegate(List<Bill> b) { _atm.AddMoney(b); SetBalances(); });
+            win.Show();
         }
     }
 }

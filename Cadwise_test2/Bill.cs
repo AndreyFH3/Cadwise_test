@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cadwise_test2
 {
-    internal class Bill
+    public class Bill
     {
         public BillValue Value { get; init; }
         public Bill(BillValue value)

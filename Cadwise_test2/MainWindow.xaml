@@ -5,19 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cadwise_test2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Баланс банкомата:" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" Text="Средств в кошельке: " VerticalAlignment="Top"/>
-        <Button x:Name="CashOutButton" Content="Снять средства" HorizontalAlignment="Left" Margin="10,114,0,0" VerticalAlignment="Top" Width="120" Click="CashOutButton_Click"/>
-        <Button Content="Внести средства" HorizontalAlignment="Left" Margin="10,167,0,0" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="AddMoneyText" HorizontalAlignment="Left" Margin="10,144,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="GetMoenyText" HorizontalAlignment="Left" Margin="10,52,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" PreviewTextInput="TextBox_PreviewTextInput"/>
-        <TextBox x:Name="RES" HorizontalAlignment="Left" Margin="247,0,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Center" Width="496" Height="332"/>
-        <CheckBox x:Name="BigMoneyCheckBox"  HorizontalAlignment="Left"  Margin="10,75,0,0" VerticalAlignment="Top" Height="34" Width="136" IsChecked="False">
+        Title="MainWindow" Height="507" Width="393">
+    <Grid Margin="0,0,0,-6">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="ATMBalanceText" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Баланс банкомата:" VerticalAlignment="Top"/>
+        <Button x:Name="CashOutButton" Content="Снять средства" HorizontalAlignment="Left" Margin="10,91,0,0" VerticalAlignment="Top" Width="120" Click="CashOutButton_Click"/>
+        <Button x:Name="AddToATM" Content="Внести средства" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top" Width="120" Click="AddToATM_Click"/>
+        <TextBox x:Name="GetMoenyText" HorizontalAlignment="Left" Margin="10,29,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120"/>
+        <CheckBox x:Name="BigMoneyCheckBox"  HorizontalAlignment="Left"  Margin="10,52,0,0" VerticalAlignment="Top" Height="34" Width="136" IsChecked="False">
             <TextBlock TextWrapping="Wrap">Большие купбры
                 (снятие более 5000)</TextBlock>
         </CheckBox>
+        <ListBox x:Name="LB" Margin="151,31,34,10"/>
+        <TextBlock HorizontalAlignment="Left" Margin="172,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.424,0.427"><Run Language="ru-ru" Text="П"/><Run Text="олученные купюры"/><LineBreak/><Run/></TextBlock>
 
     </Grid>
 </Window>

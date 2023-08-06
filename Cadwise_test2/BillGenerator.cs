@@ -18,60 +18,48 @@ namespace Cadwise_test2
             Random random = new Random();
             for (int i = 0; i < startCapacity; i++)
             {
-                int rand = random.Next(8);
+                //int rand = random.Next(8);
+                float rand = random.NextSingle();
                 switch (rand)
                 {
-                    case 0:
+                    case < 0.125f:
                         bills.Add(new Bill(BillValue.Ten));
                         break;
-                    case 1:
+                    case < .25f:
                         bills.Add(new Bill(BillValue.Fifty));
                         break;
-                    case 2:
+                    case <.375f:
                         bills.Add(new Bill(BillValue.OneHundred));
                         break;
-                    case 3:
+                    case <.5f:
                         bills.Add(new Bill(BillValue.TwoHundred));
                         break;
-                    case 4:
+                    case <.625f:
                         bills.Add(new Bill(BillValue.FiveHundred));
                         break;
-                    case 5:
+                    case <.75f:
                         bills.Add(new Bill(BillValue.OneThousand));
                         break;
-                    case 6:
+                    case < .875f:
                         bills.Add(new Bill(BillValue.TwoThousand));
                         break;
-                    case 7:
+                    case < 1:
                         bills.Add(new Bill(BillValue.FiveThousand));
                         break;
 
                 }
             }
-            return BubbleSort(bills);
+            return bills;
         }
 
-        public static List<Bill> BubbleSort(List<Bill> anArray)
+        public static List<Bill> GenerateBills(int amount, BillValue value)
         {
-          
-             for (int i = 0; i < anArray.Count; i++)
-             {
-                 for (int j = 0; j < anArray.Count - 1 - i; j++)
-                 {
-                     if ((int)anArray[j].Value > (int)anArray[j + 1].Value)
-                     {
-                        Swap(anArray, j, j + 1);
-                     }
-                 }
-             }
-            return anArray;
-        }
- 
-        public static void Swap(List<Bill> bill, int first, int second)
-        {
-            Bill tmpParam = bill[first];
-            bill[first] = bill[second];
-            bill[second] = tmpParam;
+            List<Bill> bills = new List<Bill>();    
+            for(int i = 0; i < amount; i++)
+            {
+                bills.Add(new Bill(value));
+            }
+            return bills;
         }
     }
 }
