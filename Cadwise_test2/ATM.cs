@@ -36,6 +36,7 @@ namespace Cadwise_test2
         public int tens => dictionary[BillValue.Ten];
         private Dictionary<BillValue, int> dictionary = new Dictionary<BillValue, int>();
         public List<Bill> _bills;
+        public int SpaceLeft => _bills.Capacity-_bills.Count;
 
         public ATM(int startCapacity, int maxCapacity = 1024)
         {
@@ -45,6 +46,7 @@ namespace Cadwise_test2
 
         private void CreateDictionary()
         {
+            
             foreach (Bill b in _bills)
             {
                 if (!dictionary.ContainsKey(b.Value))
@@ -56,7 +58,13 @@ namespace Cadwise_test2
 
         public void AddMoney(List<Bill> bills)
         {
-            foreach(Bill bill in bills)
+            if (_bills.Count + bills.Count >= _bills.Capacity)
+            {
+                MessageBox.Show($"Банкомат заполнен! Максимум, который можно внести: {SpaceLeft}");
+                return;
+            }
+
+            foreach (Bill bill in bills)
             {
                 _bills.Add(bill);
                 dictionary[bill.Value]++;

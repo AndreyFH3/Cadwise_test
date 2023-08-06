@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.IO;
 using System.Windows.Controls;
+using System.Threading;
 
 namespace Cadwise_test
 {
@@ -32,10 +33,14 @@ namespace Cadwise_test
             openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
             {
-                StreamReader sr = new StreamReader(openFileDialog.FileName);
-                strings.Add(sr.ReadToEnd());
-                CurrentSelected = strings[strings.Count-1];
-                Listbox.Items.Add($"Текст {Listbox.Items.Count + 1}");
+                Thread t = new Thread(() => 
+                { 
+                    StreamReader sr = new StreamReader(openFileDialog.FileName);
+                    strings.Add(sr.ReadToEnd());
+                    CurrentSelected = strings[strings.Count - 1];
+                    Listbox.Items.Add($"Текст {Listbox.Items.Count + 1}"); 
+                });
+                t.Start();
             }
         }
 
@@ -43,17 +48,24 @@ namespace Cadwise_test
         {
             if (strings.Count <= 0)
                 return;
-            
-            Deletes del = new Deletes(CurrentSelected);
-            ResultText.Text = del.DeletePunctuation();
+            Thread t = new Thread(() =>
+            { 
+                Deletes del = new Deletes(CurrentSelected);
+                ResultText.Text = del.DeletePunctuation();
+            });
+            t.Start();
         }
 
         private void DeleteShortWords_Click(object sender, RoutedEventArgs e)
         {
             if (strings.Count > 0 && int.TryParse(LengthText.Text, out int res))
             {
-                Deletes del = new Deletes(CurrentSelected);
-                ResultText.Text = del.DeleteShortWords(res);
+                Thread t = new Thread(() =>
+                {
+                    Deletes del = new Deletes(CurrentSelected);
+                    ResultText.Text = del.DeleteShortWords(res);
+                });
+                t.Start();
             }
         }
 
@@ -61,8 +73,13 @@ namespace Cadwise_test
         {
             if (strings.Count > 0 && int.TryParse(LengthText.Text, out int res))
             {
+                Thread t = new Thread(() =>
+                {
+
                 Deletes del = new Deletes(CurrentSelected);
                 ResultText.Text = del.DeleteShortWordsAndPunctuation(res);
+                });
+                t.Start();
             }
         }
 

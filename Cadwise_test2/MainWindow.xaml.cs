@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -56,11 +57,15 @@ namespace Cadwise_test2
                 if(amount % multiplayer == 0)
                 {
                     LB.Items.Clear();
-                    List<Bill> b = _atm.CashOut(amount, BigMoneyCheckBox.IsChecked);
-                    foreach(Bill bill in b)
+                    Thread t = new Thread(() =>
                     {
-                        LB.Items.Add($"Купюра номиналом: {(int)bill.Value}");
-                    }
+                        List<Bill> b = _atm.CashOut(amount, BigMoneyCheckBox.IsChecked);
+                        foreach (Bill bill in b)
+                        {
+                            LB.Items.Add($"Купюра номиналом: {(int)bill.Value}");
+                        }
+                    });
+                    t.Start();
                     multiplayer = _atm.GetMultiplayer();
                     SetBalances();
                 }
@@ -73,7 +78,7 @@ namespace Cadwise_test2
 
         private void AddToATM_Click(object sender, RoutedEventArgs e)
         {
-            Window1 win = new Window1(delegate(List<Bill> b) { _atm.AddMoney(b); SetBalances(); });
+            Window1 win = new Window1(delegate(List<Bill> b) { _atm.AddMoney(b); SetBalances(); }, _atm.SpaceLeft);
             win.Show();
         }
     }

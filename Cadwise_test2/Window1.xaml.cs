@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,10 +21,12 @@ namespace Cadwise_test2
     public partial class Window1 : Window
     {
         private AddMoney _addMoney;
-        public Window1(AddMoney addMoney)
+
+        public Window1(AddMoney addMoney, int spaceLeft)
         {
             InitializeComponent();
             _addMoney = addMoney;
+            TextLeft.Text = $"Введите колличество купюр, которое необходимо внести \r\n(не более {(spaceLeft > 100? spaceLeft : 100)})\r\n\r\n";
         }
         
         private void Cancel_Click(object sender, RoutedEventArgs e)
@@ -47,9 +50,15 @@ namespace Cadwise_test2
                     MessageBox.Show("Колличество купюр должно быть меньше 100!");
                     return;
                 }
-                Wallet w = new Wallet(_10,_50,_100,_200,_500,_1000,_2000,_5000);
-                _addMoney.Invoke(w._bills);
-                this.Close();
+
+                Thread thread = new Thread(() =>
+                { 
+                    Wallet w = new Wallet(_10,_50,_100,_200,_500,_1000,_2000,_5000);
+                    
+                    _addMoney.Invoke(w.bills);
+                    this.Close();
+                });
+                thread.Start();
             }
             else
             {
