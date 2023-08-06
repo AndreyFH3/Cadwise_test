@@ -47,7 +47,7 @@ namespace Cadwise_test2
 
         private void SetBalances()
         {
-            ATMBalanceText.Text = $"баланс банкомата: {_atm.BalanceCash}";
+            Dispatcher.Invoke(()=>ATMBalanceText.Text = $"баланс банкомата: {_atm.BalanceCash}");
         }
 
         private void CashOutButton_Click(object sender, RoutedEventArgs e)
@@ -57,12 +57,13 @@ namespace Cadwise_test2
                 if(amount % multiplayer == 0)
                 {
                     LB.Items.Clear();
+                    List<Bill> b = new List<Bill>();
                     Thread t = new Thread(() =>
                     {
-                        List<Bill> b = _atm.CashOut(amount, BigMoneyCheckBox.IsChecked);
+                        b = _atm.CashOut(amount, amount >= 5000 ? Dispatcher.Invoke(()=>BigMoneyCheckBox.IsChecked) : false);
                         foreach (Bill bill in b)
                         {
-                            LB.Items.Add($"Купюра номиналом: {(int)bill.Value}");
+                            Dispatcher.Invoke(()=>LB.Items.Add($"Купюра номиналом: {(int)bill.Value}"));
                         }
                     });
                     t.Start();

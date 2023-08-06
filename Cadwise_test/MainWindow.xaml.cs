@@ -17,7 +17,7 @@ namespace Cadwise_test
             set 
             {
                 _currentSelected = value; 
-                OpenText.Text = value; 
+                OpenText.Text = value;
             }
         }
 
@@ -37,8 +37,12 @@ namespace Cadwise_test
                 { 
                     StreamReader sr = new StreamReader(openFileDialog.FileName);
                     strings.Add(sr.ReadToEnd());
-                    CurrentSelected = strings[strings.Count - 1];
-                    Listbox.Items.Add($"Текст {Listbox.Items.Count + 1}"); 
+                    
+                    Dispatcher.Invoke(() =>
+                    {
+                        CurrentSelected = strings[strings.Count - 1];
+                        Listbox.Items.Add($"Текст {Listbox.Items.Count + 1}");
+                    }); 
                 });
                 t.Start();
             }
@@ -51,7 +55,7 @@ namespace Cadwise_test
             Thread t = new Thread(() =>
             { 
                 Deletes del = new Deletes(CurrentSelected);
-                ResultText.Text = del.DeletePunctuation();
+                Dispatcher.Invoke(() => ResultText.Text = del.DeletePunctuation());
             });
             t.Start();
         }
@@ -63,7 +67,7 @@ namespace Cadwise_test
                 Thread t = new Thread(() =>
                 {
                     Deletes del = new Deletes(CurrentSelected);
-                    ResultText.Text = del.DeleteShortWords(res);
+                    Dispatcher.Invoke(() => ResultText.Text = del.DeleteShortWords(res));
                 });
                 t.Start();
             }
@@ -76,8 +80,9 @@ namespace Cadwise_test
                 Thread t = new Thread(() =>
                 {
 
-                Deletes del = new Deletes(CurrentSelected);
-                ResultText.Text = del.DeleteShortWordsAndPunctuation(res);
+                    Deletes del = new Deletes(CurrentSelected);
+                    string temp = del.DeleteShortWordsAndPunctuation(res);
+                    Dispatcher.Invoke(() => ResultText.Text = temp);
                 });
                 t.Start();
             }
@@ -107,6 +112,11 @@ namespace Cadwise_test
 
         private void Listbox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (Listbox.SelectedIndex >= strings.Count)
+            {
+                CurrentSelected = string.Empty;
+                return;
+            }
             CurrentSelected = strings[Listbox.SelectedIndex];
         }
     }
